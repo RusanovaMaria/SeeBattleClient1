@@ -14,11 +14,11 @@ public class Client {
     public void go() {
         setUpNetworking();
 
-        Thread t = new Thread(new Reader());
-        t.start();
+        Thread r = new Thread(new Reader());
+        r.start();
 
-        Thread i = new Thread(new Writer());
-        i.start();
+        Thread w = new Thread(new Writer());
+        w.start();
         System.out.println("Соединение установлено");
     }
 
@@ -37,14 +37,14 @@ public class Client {
     }
 
 
-    private void connectIn(){
+    private void read(){
                 if (scannerOut.hasNext()) {
                     String s = scannerOut.nextLine();
                     System.out.println(s);
                 }
     }
 
-    private void connectOut(){
+    private void write(){
             if (scannerIn.hasNext()) {
                 String s = scannerIn.nextLine();
                 writer.println(s);
@@ -56,7 +56,7 @@ public class Client {
         public void run() {
             try {
                 while (!sock.isOutputShutdown()) {
-                    connectIn();
+                    read();
                 }
             } catch (Exception ex) {
                 System.out.println("Ошибка в потоке");
@@ -69,7 +69,7 @@ public class Client {
         public void run() {
             try {
                 while (!sock.isInputShutdown()) {
-                    connectOut();
+                    write();
                 }
             } catch (Exception ex) {
                 System.out.println("Ошибка в потоке");
